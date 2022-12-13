@@ -30,19 +30,23 @@ class ClothesListSerializer(serializers.ModelSerializer):
         fields = 'id clothes_name clothes_slug clothes_price clothes_image clothes_brand'.split()
 
 
-class ClothesColorListSerializer(serializers.ModelSerializer):
+class ClothesColorSerializer(serializers.ModelSerializer):
     class Meta:
         model = ClothesColor
         fields = 'id color_name color_slug'.split()
 
 
-class ClothesSizeListSerializer(serializers.ModelSerializer):
+class ClothesSizeSerializer(serializers.ModelSerializer):
     class Meta:
         model = ClothesSize
         fields = 'id ch eu us'.split()
 
 
-class ClothesInStockListSerializer(serializers.ModelSerializer):
+class ClothesInStockSerializer(serializers.ModelSerializer):
+    clothes_size = ClothesSizeSerializer(read_only=True)
+    clothes_color = ClothesColorSerializer(read_only=True)
+    clothes = ClothesListSerializer(read_only=True)
+
     class Meta:
         model = ClothesInStock
         fields = 'id clothes clothes_color clothes_size clothes_count'.split()

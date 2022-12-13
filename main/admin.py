@@ -8,7 +8,7 @@ class ClothesAdmin(admin.ModelAdmin):
     prepopulated_fields = {'clothes_slug': ('clothes_name',)}
     search_fields = ('clothes_name', 'clothes_description', 'clothes_brand__brand_name', 'clothes_category__category_name')
     list_display_links = ('id', 'clothes_name')
-    # lis
+    list_select_related = ('clothes_brand', 'clothes_category',)
 
 
 class BrandAdmin(admin.ModelAdmin):
@@ -21,13 +21,14 @@ class CategoryAdmin(admin.ModelAdmin):
     list_display = ('id', 'category_name')
     search_fields = ('id', 'category_name', 'category_description')
     list_display_links = ('id', 'category_name')
+    prepopulated_fields = {'category_slug': ('category_name',)}
 
 
 class ClothesColorAdmin(admin.ModelAdmin):
-    list_display = ('color_name', )
-    list_filter = ('color_name', )
-    search_fields = ('color_name', )
-    list_display_links = ('color_name', )
+    list_display = ('id', 'color_name', 'color_slug')
+    list_display_links = ('id', 'color_name')
+    prepopulated_fields = {'color_slug': ('color_name',)}
+    search_fields = ('color_name', 'color_slug')
 
 
 class ClothesSizeAdmin(admin.ModelAdmin):
@@ -37,9 +38,11 @@ class ClothesSizeAdmin(admin.ModelAdmin):
 
 
 class ClothesInStockAdmin(admin.ModelAdmin):
-    list_display = ('id', 'clothes', 'clothes_size', 'clothes_color',)
+    list_display = ('id', 'clothes', 'clothes_size', 'clothes_color', 'clothes_count')
     list_display_links = ('id', 'clothes')
-    search_fields = ('clothes', 'clothes_size', 'clothes_color')
+    search_fields = ('clothes__clothes_name',)
+    list_filter = ('clothes', )
+    list_select_related = ('clothes', 'clothes_size', 'clothes_color', )
 
 
 admin.site.register(Category, CategoryAdmin)
